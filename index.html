@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Alpine To Do List</title>
+    <script
+      defer
+      src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"
+    ></script>
+    <style>
+      button {
+        cursor: pointer;
+      }
+      .completed {
+        text-decoration: line-through;
+      }
+    </style>
+  </head>
+  <body>
+    <div x-data="{todos: [],userInput:''}">
+      <form>
+        <input type="text" x-model="userInput" placeholder="What to do..." />
+        <button
+          @click.prevent="if(userInput.trim().length > 0) todos.push({userInput,completed:false}); userInput=''"
+          type="submit"
+        >
+          Add
+        </button>
+      </form>
+      <template x-for="todo in todos">
+        <div>
+          <input type="checkbox" x-model="todo.completed" />
+          <span
+            x-text="todo.userInput"
+            :class="{'completed' : todo.completed}"
+          ></span>
+          <button
+            @click="todos = todos.filter((currentTodo)=> currentTodo != todo)"
+          >
+            x
+          </button>
+        </div>
+      </template>
+
+      <button @click="todos = []" x-show="todos.length">
+        Delete all todos
+      </button>
+      <div>
+        <span x-text="todos.filter((todo)=>todo.completed).length"></span>/
+        <span x-text="todos.length"></span> to dos completed
+      </div>
+    </div>
+  </body>
+</html>
